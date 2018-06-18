@@ -170,15 +170,18 @@ char GapBuffer::GetChar() {
 }
 
 /*
-* Replace the character of cursor.
+* Replace the character before cursor.
 * Does not move the gap.
 */
 void GapBuffer::ReplaceChar(char ch) {
 
-    if(cursor == gapStart)
-        cursor = gapEnd;
+    if(cursor == text)
+        return;
 
-    *cursor = ch;
+    if(cursor == gapEnd)
+        cursor = gapStart;
+
+    *(cursor-1) = ch;
 }
 
 /*
@@ -190,7 +193,7 @@ void GapBuffer::InsertChar(char ch) {
         ExpandBuffer();
 
     GapUpdate();
-    *(++cursor) = ch;
+    *(cursor++) = ch;
     ++gapStart;
 }
 
@@ -320,6 +323,7 @@ int GapBuffer::SaveBufferToFile(char *filename) {
 void GapBuffer::Debug() {
     static int count = 0;
     ++count;
+    GapUpdate();
     std::cout << "Debug case " << count << std::endl;
     std::cout << "cursor offset = " << CursorOffset() << std::endl;
     std::cout << "gapStart = " << (gapStart - text) << std::endl;
@@ -327,5 +331,41 @@ void GapBuffer::Debug() {
     std::cout << "The left part is: " << std::endl;
     std::cout.write(text,cursor-text) << std::endl;
     std::cout << "The right part is: " << std::endl;
-    std::cout.write(gapEnd,textEnd-gapEnd) << std::endl;
+    std::cout.write(gapEnd,textEnd-gapEnd) << std::endl << std::endl;
 }
+
+/*
+ * Move cursor forward i steps
+ * @param i steps number
+ */
+void GapBuffer::CursorForwardByStep(unsigned i) {
+    if(cursor < gapStart){
+        if(cursor + i > gapStart)
+            cursor += gapEnd - gapStart + i;
+        else
+            cursor += i;
+    }
+    else if(cursor == gapStart)
+        cursor = gapEnd +i;
+    else
+        cursor += i;
+}
+
+/*
+ * Move cursor backward i steps
+ * @param i steps number
+ */
+void GapBuffer::CursorBackwardByStep(unsigned i) {
+    if(cursor <= gapStart)
+        cursor -= i;
+    else if(cursor == gapEnd)
+        cursor = gapStart - i;
+    else{
+        if(cursor - i < gapEnd)
+            cursor -= gapEnd - gapStart + 1;
+        else
+            cursor -= i;
+    }
+}
+
+

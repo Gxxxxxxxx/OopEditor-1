@@ -4,7 +4,7 @@ project(SDL_first)
 set(CMAKE_CXX_STANDARD 11)
 include_directories(lib/)
 
-add_executable(SDL_first main.cpp )
+add_executable(SDL_first main.cpp)
 
 INCLUDE(FindPkgConfig)
 

@@ -146,6 +146,18 @@ public:
     void CursorBackward();
 
     /*
+     * Move cursor forward i steps
+     * @param i steps number
+     */
+    void CursorForwardByStep(unsigned i);
+
+    /*
+     * Move cursor backward i steps
+     * @param i steps number
+     */
+    void CursorBackwardByStep(unsigned i);
+
+    /*
      * Output text in left part and right part.
      */
     void Debug();
