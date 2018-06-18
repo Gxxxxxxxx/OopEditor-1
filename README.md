@@ -55,14 +55,6 @@ Waiting...
 
     * 作为一个class static method(可以改变)
 
-  * 文本结构暂时定为
-
-    ```
-    struct TEXT {
-        std::string content;
-        int cursor;
-    }
-    ```
 
 ### 未来
 
