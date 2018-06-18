@@ -14,9 +14,13 @@
 #include "cleanup.h"
 #include "res_path.h"
 #include "EditorKeyCursor.h"
+#include "GapBuffer.h"
 
 class EditorWindow{
 private:
+
+    GapBuffer gb;
+
     /* Parameter of window size. */
     const int SCREEN_WIDTH  = 644;
     const int SCREEN_HEIGHT = 480;
@@ -85,6 +89,18 @@ private:
      */
     SDL_Texture* renderText(const std::string &message, const std::string &fontFile, SDL_Color color,
                             int fontSize, SDL_Renderer *renderer);
+
+    /*
+     * Render the character we want to display
+     * @param ch The Character we want to display
+     * @param fontFile The font we want to use to render the text
+     * @param color The color we want the text to be
+     * @param fontSize The size we want the font to be
+     * @param renderer The renderer to load the texture in
+     * @return An SDL_Texture containing the rendered message, or nullptr if something went wrong
+     */
+    SDL_Texture* renderCh(const char ch, const std::string &fontFile, SDL_Color color, int fontSize,
+                            SDL_Renderer *renderer);
 
     /*  There is no need for a copy construction function. */
     EditorWindow(const EditorWindow &);
