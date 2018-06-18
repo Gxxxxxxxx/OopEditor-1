@@ -190,19 +190,20 @@ void EditorWindow::show(){
                 if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_BACKSPACE && text.length() > 0){
                     l = text.length();
                     text = text.substr(0,l-1);
-                    cursor.moveBackward();
-                    std::cout << "Delete word!" << std::endl;
+                        cursor.moveBackward();
+                    //std::cout << "Delete word!" << std::endl;
                 }
                 else if(e.type == SDL_TEXTINPUT){
                     tstr = e.text.text;
                     text += tstr;
-                    cursor.moveForward();
-                    std::cout << "e.text.text.length " << tstr.length() << ' ' << e.text.text << std::endl;
+                        cursor.moveForward();
+                    //std::cout << "e.text.text.length " << tstr.length() << ' ' << e.text.text << std::endl;
                 }
-                std::cout << "text length = "<<text.length() << " Text is -> " << text << std::endl;
+                //std::cout << "text length = "<<text.length() << " Text is -> " << text << std::endl;
+                //cursor.debug();
             }
             if(e.type == SDL_USEREVENT){
-                std::cout << "change visibility." << std::endl;
+                //std::cout << "change visibility." << std::endl;
                 cursor.changeVisibility();
             }
         }
@@ -223,8 +224,8 @@ void EditorWindow::show(){
         //rendered to a texture
         if(text.size() > 0){
             for(int i = 0;text.length() > CHARACTERS_PER_ROW*i ;++i ){
-                image = renderText(text.substr(i*CHARACTERS_PER_ROW,CHARACTERS_PER_ROW), TTF_file, color, 64, renderer);
-                renderTexture(image, renderer, 0, i*80);
+                image = renderText(text.substr(i*CHARACTERS_PER_ROW,CHARACTERS_PER_ROW), TTF_file, color, 32, renderer);
+                renderTexture(image, renderer, 0, i*LineSpacing);
             }
         }
 
@@ -234,6 +235,7 @@ void EditorWindow::show(){
 
         //Draw cursor
         if(cursor.isVisable()){
+            cursor.calcCoordinate();
             SDL_Rect cursorRect = { cursor.get_x(), cursor.get_y(), cursor.get_cursorWidth(),cursor.get_cursorHeight()};
             SDL_SetRenderDrawColor(renderer,cursorColor.r,cursorColor.g,cursorColor.b,cursorColor.a);
             SDL_RenderFillRect( renderer, &cursorRect);

@@ -3,6 +3,7 @@
 //
 
 #include "EditorWindow.h"
+/* 这里SDL2库的导入存在问题，所以暂时先用include导入。。。。 */
 #include "EditorWindow.cpp"
 
 int main(){

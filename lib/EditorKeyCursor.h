@@ -22,8 +22,8 @@ public:
      * @param dis The space between cursor and character
      * @param v The cursor visibility
      */
-    EditorKeyCursor(unsigned w = 3, unsigned r = 0, unsigned c = 0, unsigned chw=32, unsigned chh=65,
-                 unsigned ls=10, unsigned dis = 5,bool v = true):
+    EditorKeyCursor(unsigned w = 1, unsigned r = 0, unsigned c = 0, unsigned chw=16, unsigned chh=33,
+                 unsigned ls=5, unsigned dis = 3,bool v = true):
             cursorWidth(w),cursorHeight(chh),row(r),col(c),chWidth(chw),
             chHeight(chh),lineSpacing(ls),disBetweenChAndCursor(dis),visable(v){};
     /*
@@ -49,7 +49,7 @@ public:
     /*
      * Return whether the cursor is visible.
      */
-    inline bool isVisable();
+    inline bool isVisable() const;
 
     /*
      * Return a SDL_Rect * object to draw a cursor.
@@ -59,22 +59,52 @@ public:
     /*
      * Return x coordinate of cursor
      */
-    inline int get_x();
+    inline int get_x() const;
 
     /*
      * Return y coordinate of cursor
      */
-    inline int get_y();
+    inline int get_y() const;
 
     /*
      * Return cursor width
      */
-    inline int get_cursorWidth();
+    inline int get_cursorWidth() const;
 
     /*
      * Return cursor height
      */
-    inline int get_cursorHeight();
+    inline int get_cursorHeight() const;
+
+    /*
+     * Go to next line
+     */
+    inline void moveDown();
+
+    /*
+     * Go to the line before current line
+     */
+    inline void moveUp();
+
+    /*
+     * Go to new_r,new_c
+     */
+    inline void set(unsigned new_r, unsigned new_c);
+
+    /*
+     * Go back to the start of line.
+     */
+    inline void gotoLineHead();
+
+    /*
+     * Go to the tail of the line
+     */
+    inline void gotoLineTail();
+
+    /*
+     * Debug
+     */
+    inline void debug();
 
 private:
     bool visable;
@@ -101,8 +131,15 @@ inline void EditorKeyCursor::calcCoordinate() {
  * Move cursor forward.
  */
 inline void EditorKeyCursor::moveBackward() {
-    --col;
-    calcCoordinate();
+    if(col == 0){
+        if(row > 0){
+            --row;
+            col = 39;
+        }
+        return;
+    }
+    else
+        --col;
 }
 
 /*
@@ -110,7 +147,10 @@ inline void EditorKeyCursor::moveBackward() {
  */
 inline void EditorKeyCursor::moveForward() {
     ++col;
-    calcCoordinate();
+    if(col == 40){
+        col = 0;
+        ++row;
+    }
 }
 
 /*
@@ -123,35 +163,79 @@ inline void EditorKeyCursor::changeVisibility() {
 /*
  * Return whether the cursor is visible.
  */
-inline bool EditorKeyCursor::isVisable() {
+inline bool EditorKeyCursor::isVisable() const{
     return visable;
 }
 
 /*
  * Return x coordinate of cursor
  */
-inline int EditorKeyCursor::get_x() {
+inline int EditorKeyCursor::get_x() const{
     return x;
 }
 
 /*
  * Return y coordinate of cursor
  */
-inline int EditorKeyCursor::get_y() {
+inline int EditorKeyCursor::get_y() const{
     return y;
 }
 
 /*
  * Return cursor width
  */
-inline int EditorKeyCursor::get_cursorWidth() {
+inline int EditorKeyCursor::get_cursorWidth() const{
     return cursorWidth;
 }
 
 /*
  * Return cursor height
  */
-inline int EditorKeyCursor::get_cursorHeight() {
+inline int EditorKeyCursor::get_cursorHeight() const{
     return cursorHeight;
+}
+
+/*
+ * Go to next line
+ */
+inline void EditorKeyCursor::moveDown() {
+    ++row;
+}
+
+/*
+ * Go to the line before current line
+ */
+inline void EditorKeyCursor::moveUp() {
+    if(row > 0)
+        --row;
+}
+
+/*
+ * Set row and column.
+ */
+inline void EditorKeyCursor::set(unsigned new_r, unsigned new_c){
+    row = new_r;
+    col = new_c;
+}
+
+/*
+ * Go to the start of line.
+ */
+inline void EditorKeyCursor::gotoLineHead() {
+    col = 0;
+}
+
+/*
+ * Go to the tail of the line.
+ */
+inline void EditorKeyCursor::gotoLineTail() {
+    col = 40;
+}
+
+/*
+ * Debug
+ */
+inline void EditorKeyCursor::debug() {
+    std::cout << "row = " << row << " col= " << col << std::endl;
 }
 #endif

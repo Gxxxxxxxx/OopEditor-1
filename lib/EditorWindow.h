@@ -18,9 +18,10 @@
 class EditorWindow{
 private:
     /* Parameter of window size. */
-    const int SCREEN_WIDTH  = 640;
+    const int SCREEN_WIDTH  = 644;
     const int SCREEN_HEIGHT = 480;
-    const int CHARACTERS_PER_ROW = 20;
+    const int CHARACTERS_PER_ROW = 40;
+    const int LineSpacing = 35;
 
     SDL_Window *window;
     SDL_Renderer *renderer;
