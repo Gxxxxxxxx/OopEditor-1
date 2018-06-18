@@ -56,7 +56,7 @@ public:
     /* Constructor with instantiating with an existing file.
      * @param filename The name of text file.
      */
-    GapBuffer(char * filename);
+    GapBuffer(const char * filename);
 
     ~GapBuffer();
 
@@ -100,13 +100,13 @@ public:
      * Does not move the gap.
      * @param ch The character you want to use to replace.
      */
-    void ReplaceChar(char ch);
+    void ReplaceChar(const char ch);
 
     /*
      * Insert a character at cursor position.
      * @param ch The character you want to insert.
      */
-    void InsertChar(char ch);
+    void InsertChar(const char ch);
 
     /*
      * Delete a character at cursor position.
@@ -133,7 +133,7 @@ public:
      * Save text content into file.
      * @param filename The name of text file.
      */
-    int SaveBufferToFile(char * filename);
+    int SaveBufferToFile(const char * filename);
 
     /*
      * Move Cursor forward one character.
@@ -161,5 +161,9 @@ public:
      * Output text in left part and right part.
      */
     void Debug();
+
+    void expand(){
+        ExpandBuffer();
+    }
 };
 #endif

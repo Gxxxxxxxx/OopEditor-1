@@ -39,7 +39,7 @@ GapBuffer::GapBuffer(int gsize):text(nullptr) {
  * 2.Initialize the buffer
  * 3.Text-->buffer
  */
-GapBuffer::GapBuffer(char *filename) {
+GapBuffer::GapBuffer(const char *filename) {
 
     std::ifstream in(filename,std::ios::binary | std::ios::ate);
 
@@ -50,6 +50,9 @@ GapBuffer::GapBuffer(char *filename) {
     unsigned int fileSize = in.tellg(),bufferSize = fileSize * 2;
 
     InitBuffer(bufferSize);
+
+    gapStart = cursor = text + fileSize;
+
 
     in.seekg(0,std::ios::beg);
     in.read(text,fileSize);
@@ -173,7 +176,7 @@ char GapBuffer::GetChar() {
 * Replace the character before cursor.
 * Does not move the gap.
 */
-void GapBuffer::ReplaceChar(char ch) {
+void GapBuffer::ReplaceChar(const char ch) {
 
     if(cursor == text)
         return;
@@ -187,7 +190,7 @@ void GapBuffer::ReplaceChar(char ch) {
 /*
 * Insert a character at cursor position.
 */
-void GapBuffer::InsertChar(char ch) {
+void GapBuffer::InsertChar(const char ch) {
 
     if(gap_size() < 1)
         ExpandBuffer();
@@ -245,7 +248,7 @@ void GapBuffer::InsertString(std::string s) {
     if(cursor != gapStart)
         GapUpdate();
 
-    if(gap_size() < s.size()){
+    while(gap_size() < s.size()){
         ExpandBuffer();
     }
 
@@ -303,7 +306,7 @@ void GapBuffer::CursorBackward() {
 /*
  * Save text in the buffer to file.
  */
-int GapBuffer::SaveBufferToFile(char *filename) {
+int GapBuffer::SaveBufferToFile(const char *filename) {
 
     std::ofstream out(filename);
 
